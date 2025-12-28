@@ -1,27 +1,39 @@
-# speed-kills
+# SPEED KILLS
 
-## Brainstormed ideas
+> [!WARNING]  
+> This game is still a Work In Progress!
 
-- drunken master, kasutad baaris suvalisi objekte relvana
-- hiir on relv (nagu see mouse cursor) (nt cursorblade)
-- vampire survior
-    - relvade dam/rng/scale/etc scaleib kiirusega
-- wikipedia / browseri lehed relvana
-    - vikipeedia lehed on relvad / omadused (a la otsid metalli vikipeedialehe et saad extra statte)
-- terve environment on interactitav (a la minecraft aga dirt blockid on ka relvad)
-    - vaenlaste surnukehad on manipuleeritavad (korjad üles ja viskad vms)
-- vampire survivor x tower defence, sul ei ole relvi aga saad igasuguseid funky trappe ehitada
-- lasso, saad asju kinni püüda ja swingida
-    - top down, saad vastaseid / objekte lassoga kinni püüda ja swingida
-- enter the gungeon aga KÕIK ON GRANAADID JA KÕIK PLAHVATAB RIIIII
-- mängid pilli ja pillid teevad helilaineid
-    - doppler effect
-- roblox +1 stat mäng
-- liikumine tapab (neon gaming from valo)
-    - kui oled piisavalt kiirust kogunud ss saad dashida ja see tapab
-    - slither.io ahh game
-    - piisavalt kiirust on vaja, et kindlatest asjadest läbi sõita
-    - kuidas peatumine põnevaks teha?
-        - peatudes plahvatad, dam ja area scaleb kiirusega
-        - peatudes build uppid kiirust (oldschool sonic) aga ei saa liiga kaua build uppida, muidu sured
-    - sinu pea on puur ja sõidad vastastele otsa
+## [GDD Google Docs](https://docs.google.com/document/d/1hsAFGCoQ9qtD1qUtCjNeszvj7dg1f9Pw2vca_gBjfDc/edit?usp=sharing)
+
+## Game Description draft
+
+**SPEED KILLS** — Like a wise man once said “Speed has never killed anyone. Suddenly becoming stationary, that's what gets you.” Your job is to **NEVER STOP** but that might get difficult with hordes of enemies getting in your way. So put your foot on the floor, gather speed and **BLAST** through them.
+
+Made in a few days as a laid-back gamejam with friends
+
+### Other quotes to use
+
+- “Speed is key!” -Jacksepticeye
+- “Speed. I am speed.” -Lightning Mcqueen
+
+## Planned gamedev phases
+
+### phase 0
+
+- godot file ja git repo korras
+- asteetika paigas
+
+### phase 1
+
+- liikumine
+- dash
+- tegelase art + animatsioonid
+- simple background tileset
+
+### phase 2
+
+- vastased
+- kõik need kiir...
+- vaenlaste art
+- UI
+- Final polish
