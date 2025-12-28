@@ -6,7 +6,6 @@ var turn_speed_divider := 20
 var freezeTime = false
 @onready var input_vector = $Input_vector #debug
 @onready var current_vector = $Current_vector #debug
-@onready var mouse_vector = $Mouse_vector #debug
 @onready var temp_dash_visual = $Temp_dash_visual
 @onready var dash_timer = $DashTimer
 @onready var dash_cooldown = $DashCooldown

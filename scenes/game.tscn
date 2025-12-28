@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=4 uid="uid://boig1ilegx0ui"]
+[gd_scene load_steps=11 format=4 uid="uid://boig1ilegx0ui"]
 
 [ext_resource type="Script" uid="uid://dwurn3wroexvy" path="res://scripts/game_manager.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://s6qifvc7aw23" path="res://scenes/player.tscn" id="1_uwrxv"]
 [ext_resource type="Texture2D" uid="uid://jp1pr5aefyut" path="res://assets/sprites/dev.png" id="1_yqjtg"]
+[ext_resource type="PackedScene" uid="uid://duldeifmssmvm" path="res://scenes/slime_enemy.tscn" id="4_lbhrr"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lnu2h"]
 texture = ExtResource("1_yqjtg")
@@ -74,6 +75,9 @@ ignore_time_scale = true
 wait_time = 5.0
 one_shot = true
 ignore_time_scale = true
+
+[node name="Slime enemy" parent="." instance=ExtResource("4_lbhrr")]
+position = Vector2(-3, -141)
 
 [node name="edge_colliders" type="Node2D" parent="."]
 position = Vector2(0, 336)
