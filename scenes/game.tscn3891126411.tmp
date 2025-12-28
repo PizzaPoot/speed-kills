@@ -92,13 +92,11 @@ process_callback = 0
 position_smoothing_enabled = true
 
 [node name="Current_vector" type="Line2D" parent="Player"]
-visible = false
 points = PackedVector2Array(0, 0, 0, 0)
 width = 2.0
 default_color = Color(0.23592287, 0.45661545, 1, 1)
 
 [node name="Input_vector" type="Line2D" parent="Player"]
-visible = false
 points = PackedVector2Array(0, 0, 10, 0)
 width = 2.0
 default_color = Color(0.49104726, 0.9999998, 0.4473083, 1)
@@ -121,6 +119,7 @@ max_results = 1
 [node name="DashTimer" type="Timer" parent="Player"]
 wait_time = 0.1
 one_shot = true
+ignore_time_scale = true
 
 [node name="DashCooldown" type="Timer" parent="Player"]
 wait_time = 5.0

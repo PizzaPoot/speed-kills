@@ -1,38 +1,22 @@
-[gd_scene load_steps=14 format=3 uid="uid://duldeifmssmvm"]
+[gd_scene load_steps=10 format=3 uid="uid://duldeifmssmvm"]
 
 [ext_resource type="Script" uid="uid://bxvtyydaq6p07" path="res://scripts/slime_enemy.gd" id="1_30a25"]
-[ext_resource type="Texture2D" uid="uid://cwgc7lrwwcaab" path="res://assets/sprites/slime.png" id="2_30a25"]
+[ext_resource type="Texture2D" uid="uid://dr5nvku6f7eya" path="res://assets/sprites/slime_placeholder.png" id="1_057e2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_30a25"]
-atlas = ExtResource("2_30a25")
-region = Rect2(0, 32, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_fq0mw"]
-atlas = ExtResource("2_30a25")
-region = Rect2(32, 32, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_2blxa"]
-atlas = ExtResource("2_30a25")
-region = Rect2(64, 32, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_hf6xp"]
-atlas = ExtResource("2_30a25")
-region = Rect2(96, 32, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_c78co"]
-atlas = ExtResource("2_30a25")
+atlas = ExtResource("1_057e2")
 region = Rect2(0, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_asgod"]
-atlas = ExtResource("2_30a25")
+[sub_resource type="AtlasTexture" id="AtlasTexture_fq0mw"]
+atlas = ExtResource("1_057e2")
 region = Rect2(32, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_078ac"]
-atlas = ExtResource("2_30a25")
+[sub_resource type="AtlasTexture" id="AtlasTexture_2blxa"]
+atlas = ExtResource("1_057e2")
 region = Rect2(64, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_3ydsu"]
-atlas = ExtResource("2_30a25")
+[sub_resource type="AtlasTexture" id="AtlasTexture_hf6xp"]
+atlas = ExtResource("1_057e2")
 region = Rect2(96, 0, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_c78co"]
@@ -49,26 +33,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_hf6xp")
-}, {
-"duration": 1.0,
-"texture": null
-}],
-"loop": false,
-"name": &"death",
-"speed": 10.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_c78co")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_asgod")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_078ac")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_3ydsu")
 }],
 "loop": true,
 "name": &"idle",
@@ -86,11 +50,11 @@ gravity_scale = 0.0
 script = ExtResource("1_30a25")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -14)
+position = Vector2(0, -15)
 sprite_frames = SubResource("SpriteFrames_c78co")
 animation = &"idle"
 autoplay = "idle"
-frame_progress = 0.19011669
+frame_progress = 0.65348774
 
 [node name="Area2D" type="Area2D" parent="."]
 visible = false

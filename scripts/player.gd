@@ -1,33 +1,85 @@
 extends CharacterBody2D
 
+signal pointing_at_enemy(enemy)
+
 var SPEED := 200.0
-var DashSpeed := 1500.0 #TODO scale with speed
 var turn_speed_divider := 20
 var freezeTime = false
-@onready var input_vector = $Input_vector #debug
-@onready var current_vector = $Current_vector #debug
-@onready var temp_dash_visual = $Temp_dash_visual
-@onready var dash_timer = $DashTimer
-@onready var dash_cooldown = $DashCooldown
-
 var turn_speed : float = clamp(turn_speed_divider/SPEED,0,1)
 var targetDirection := Vector2.RIGHT
 var moveDirection := Vector2.RIGHT
 var dashVector := Vector2.RIGHT
 var inDash := false
+var dashStartPosition := global_position
+var dash_distance: float = 100.0 #TODO scale with speed
+var dynamic_dash_distance : float = dash_distance
+var dash_time: float = 0.1
+var dash_speed: float:
+	get:
+		return dynamic_dash_distance / dash_time
+var dash_direction: Vector2 = Vector2.ZERO:
+	get:
+		if inDash:
+			return dashVector
+		return Vector2.ZERO
+		
+@onready var input_vector := $Input_vector #debug
+@onready var current_vector := $Current_vector #debug
+@onready var dash_arrow := $Dash_arrow
+@onready var dash_timer := $DashTimer
+@onready var dash_cooldown := $DashCooldown
+@onready var dash_shapecast := $Dash_shapecast
+@onready var animated_sprite := $AnimatedSprite2D
 
-func getDashVelocity(): #set moving to dash direction, move to end of dash vector fast
-	moveDirection = Vector2.RIGHT.rotated(dashVector.angle())
-	targetDirection = moveDirection
-	inDash = true
-	dash_timer.start()
-	return moveDirection * 1000
+func handleAnimationDirections():
+	var snapped_rotation : float = snappedf(snappedf(velocity.angle(), TAU/8), 0.01)
+	if snapped_rotation == 0.0: # E
+		animated_sprite.animation = "animationRight"
+		animated_sprite.flip_h = false
+	elif snapped_rotation == -0.79: # NE
+		animated_sprite.animation = "animationUpDiagR"
+		animated_sprite.flip_h = false
+	elif snapped_rotation == -1.57: # N
+		animated_sprite.animation = "animationUp"
+		animated_sprite.flip_h = false
+	elif snapped_rotation == -2.36: # NW
+		animated_sprite.animation = "animationUpDiagR"
+		animated_sprite.flip_h = true
+	elif snapped_rotation == -3.14: # W
+		animated_sprite.animation = "animationRight"
+		animated_sprite.flip_h = true
+	elif snapped_rotation == 3.14: # W
+		animated_sprite.animation = "animationRight"
+		animated_sprite.flip_h = true
+	elif snapped_rotation == 2.36: # SW
+		animated_sprite.animation = "animationDownDiagR"
+		animated_sprite.flip_h = true
+	elif snapped_rotation == 1.57: # S
+		animated_sprite.animation = "animationDown"
+		animated_sprite.flip_h = false
+	elif snapped_rotation == 0.79: # SE
+		animated_sprite.animation = "animationDownDiagR"
+		animated_sprite.flip_h = false
+	
+
+
 
 func dashVisualizer():
-	var mousePos := get_local_mouse_position()
-	var dashAngle := mousePos.angle()
-	dashVector = Vector2.RIGHT.rotated(dashAngle)
-	temp_dash_visual.set_point_position(1, dashVector*(DashSpeed/10))
+	dash_arrow.visible = true
+	dashVector = dashVector.direction_to(get_local_mouse_position())
+	dash_shapecast.target_position = dashVector*dash_distance
+	if dash_shapecast.is_colliding():
+		var enemy : RigidBody2D = dash_shapecast.get_collider(0)
+		if "Enemy" in enemy.get_groups():
+			pointing_at_enemy.emit(enemy)
+			dash_arrow.set_point_position(1, dashVector*(enemy.position - position).length())
+			dashVector = dashVector.direction_to(enemy.position - position)
+			dynamic_dash_distance = (enemy.position - position).length()
+			return
+	else:
+		pointing_at_enemy.emit(RigidBody2D)
+	dynamic_dash_distance = dash_distance
+	dash_arrow.set_point_position(1, dashVector*dash_distance)
 
 func calculateMoveVector(newInputDirection: Vector2):
 	if newInputDirection != Vector2.ZERO:
@@ -42,6 +94,9 @@ func calculateMoveVector(newInputDirection: Vector2):
 func _on_dash_timer_timeout() -> void:
 	dash_cooldown.start()
 	inDash = false
+
+func _dash() -> void:
+	velocity = dash_speed * dash_direction
 
 func _physics_process(_delta: float) -> void:
 	
@@ -63,10 +118,19 @@ func _physics_process(_delta: float) -> void:
 	velocity = moveDirection * SPEED
 	
 	if Input.is_action_pressed("dash") and dash_cooldown.is_stopped():
+		Engine.time_scale = 0.5
 		dashVisualizer()
 	if Input.is_action_just_released("dash") and dash_cooldown.is_stopped():
-		velocity = getDashVelocity()
+		Engine.time_scale = 1
+		inDash = true
+		dash_arrow.visible = false
+		targetDirection = dashVector
+		pointing_at_enemy.emit(RigidBody2D)
+		dash_timer.start()
+	
 	if inDash:
-		velocity = moveDirection * DashSpeed
+		_dash()
+		
+	handleAnimationDirections()
 	
 	move_and_slide()
