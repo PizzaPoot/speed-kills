@@ -60,6 +60,21 @@ points = PackedVector2Array(0, 0, 10, 0)
 width = 2.0
 default_color = Color(0.49104726, 0.9999998, 0.4473083, 1)
 
+[node name="Temp_dash_visual" type="Line2D" parent="Player"]
+points = PackedVector2Array(0, 0, 10, 0)
+width = 2.0
+default_color = Color(0.87, 0, 0.014499779, 1)
+
+[node name="DashTimer" type="Timer" parent="Player"]
+wait_time = 0.1
+one_shot = true
+ignore_time_scale = true
+
+[node name="DashCooldown" type="Timer" parent="Player"]
+wait_time = 5.0
+one_shot = true
+ignore_time_scale = true
+
 [node name="edge_colliders" type="Node2D" parent="."]
 position = Vector2(0, 336)
 
@@ -87,3 +102,4 @@ position = Vector2(0, -720)
 shape = SubResource("WorldBoundaryShape2D_iywne")
 
 [connection signal="draw" from="." to="Player" method="_on_game_draw"]
+[connection signal="timeout" from="Player/DashTimer" to="Player" method="_on_dash_timer_timeout"]

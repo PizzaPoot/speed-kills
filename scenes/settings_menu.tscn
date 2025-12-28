@@ -1,0 +1,47 @@
+[gd_scene load_steps=2 format=3 uid="uid://cpnvu0pk4crhd"]
+
+[ext_resource type="Script" uid="uid://dmg54llnb1iay" path="res://scripts/settings_menu.gd" id="1_05p07"]
+
+[node name="Settings menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_05p07")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 80
+theme_override_constants/margin_right = 345
+theme_override_constants/margin_bottom = 609
+
+[node name="BackButton" type="Button" parent="HBoxContainer/MarginContainer"]
+layout_mode = 2
+text = "BACK"
+
+[node name="ReferenceRect2" type="ReferenceRect" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/CenterContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 126
+text = "TODO"
+
+[node name="ReferenceRect" type="ReferenceRect" parent="HBoxContainer"]
+layout_mode = 2
+
+[connection signal="pressed" from="HBoxContainer/MarginContainer/BackButton" to="." method="_on_back_button_pressed"]

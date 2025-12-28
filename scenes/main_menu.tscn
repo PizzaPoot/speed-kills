@@ -1,0 +1,101 @@
+[gd_scene load_steps=8 format=3 uid="uid://bpj4pkhnuo8b1"]
+
+[ext_resource type="FontFile" uid="uid://ciksuy2qorhih" path="res://assets/fonts/alagard.ttf" id="1_ekxnf"]
+[ext_resource type="AudioStream" uid="uid://cwwoxuk6mlpnv" path="res://assets/music/menuMusic.mp3" id="1_l6cm7"]
+[ext_resource type="Script" uid="uid://chmsi2fb7g1kq" path="res://scripts/main_menu.gd" id="1_wu84c"]
+[ext_resource type="FontFile" uid="uid://csjjxl31udlib" path="res://assets/fonts/Pixeland.ttf" id="2_bqqt6"]
+[ext_resource type="PackedScene" uid="uid://cpnvu0pk4crhd" path="res://scenes/settings_menu.tscn" id="4_8ln24"]
+
+[sub_resource type="FontVariation" id="FontVariation_bqqt6"]
+base_font = ExtResource("1_ekxnf")
+
+[sub_resource type="FontVariation" id="FontVariation_wu84c"]
+base_font = ExtResource("2_bqqt6")
+
+[node name="Main menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wu84c")
+
+[node name="MainLayer" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+
+[node name="MarginContainer" type="MarginContainer" parent="MainLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="PanelContainer" type="PanelContainer" parent="MainLayer/MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainLayer/MarginContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainLayer/MarginContainer/PanelContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 150
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainLayer/MarginContainer/PanelContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainLayer/MarginContainer/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("FontVariation_bqqt6")
+theme_override_font_sizes/font_size = 40
+text = "SPEED KILLS"
+
+[node name="MarginContainer" type="MarginContainer" parent="MainLayer/MarginContainer/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 169
+
+[node name="PlayButton" type="Button" parent="MainLayer/MarginContainer/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_colors/font_pressed_color = Color(0.99999994, 0.1943762, 0.14415282, 1)
+theme_override_colors/font_hover_color = Color(1, 0.437756, 0.42168856, 1)
+theme_override_fonts/font = SubResource("FontVariation_wu84c")
+theme_override_font_sizes/font_size = 35
+text = "PLAY"
+flat = true
+alignment = 0
+
+[node name="MarginContainer3" type="MarginContainer" parent="MainLayer/MarginContainer/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 117
+
+[node name="SettingsButton" type="Button" parent="MainLayer/MarginContainer/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer3"]
+layout_mode = 2
+theme_override_colors/font_pressed_color = Color(3.9948522e-06, 0.6611012, 0.27380648, 1)
+theme_override_colors/font_hover_color = Color(0.5187, 0.91, 0.6426116, 1)
+theme_override_fonts/font = SubResource("FontVariation_wu84c")
+theme_override_font_sizes/font_size = 35
+text = "SETTINGS"
+flat = true
+alignment = 0
+
+[node name="SettingsLayer" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+visible = false
+
+[node name="Settings menu" parent="SettingsLayer" instance=ExtResource("4_8ln24")]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_l6cm7")
+volume_db = -18.128
+autoplay = true
+parameters/looping = true
+
+[connection signal="pressed" from="MainLayer/MarginContainer/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/PlayButton" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="MainLayer/MarginContainer/PanelContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer3/SettingsButton" to="." method="_on_settings_pressed"]
