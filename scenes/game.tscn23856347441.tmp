@@ -25,7 +25,6 @@ normal = Vector2(0, 1)
 [node name="Game" type="Node2D"]
 
 [node name="GameManager" type="Node" parent="."]
-unique_name_in_owner = true
 script = ExtResource("1_lnu2h")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
@@ -43,7 +42,7 @@ offset_bottom = 30.0
 text = "Freeze timer: 0.0"
 
 [node name="Player" parent="." instance=ExtResource("1_uwrxv")]
-unique_name_in_owner = true
+SPEED = 300.13
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 zoom = Vector2(3, 3)
