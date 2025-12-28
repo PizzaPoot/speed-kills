@@ -10,6 +10,7 @@ var targetDirection := Vector2.RIGHT
 var moveDirection := Vector2.RIGHT
 var dashVector := Vector2.RIGHT
 var inDash := false
+var dashed_to_enemy : RigidBody2D
 var dashStartPosition := global_position
 var dash_distance: float = 100.0 #TODO scale with speed
 var dynamic_dash_distance : float = dash_distance
@@ -30,6 +31,9 @@ var dash_direction: Vector2 = Vector2.ZERO:
 @onready var dash_cooldown := $DashCooldown
 @onready var dash_shapecast := $Dash_shapecast
 @onready var animated_sprite := $AnimatedSprite2D
+@onready var dash_start_sfx := $DashStart
+@onready var dash_sfx := $Dash
+@onready var dash_sfx_cooldown := $Dash_sfx_cooldown
 
 func handleAnimationDirections():
 	var snapped_rotation : float = snappedf(snappedf(velocity.angle(), TAU/8), 0.01)
@@ -62,8 +66,6 @@ func handleAnimationDirections():
 		animated_sprite.flip_h = false
 	
 
-
-
 func dashVisualizer():
 	dash_arrow.visible = true
 	dashVector = dashVector.direction_to(get_local_mouse_position())
@@ -75,6 +77,7 @@ func dashVisualizer():
 			dash_arrow.set_point_position(1, dashVector*(enemy.position - position).length())
 			dashVector = dashVector.direction_to(enemy.position - position)
 			dynamic_dash_distance = (enemy.position - position).length()
+			dashed_to_enemy = enemy
 			return
 	else:
 		pointing_at_enemy.emit(RigidBody2D)
@@ -95,8 +98,16 @@ func _on_dash_timer_timeout() -> void:
 	dash_cooldown.start()
 	inDash = false
 
+func _on_dash_sfx_cooldown_timeout() -> void:
+	dash_start_sfx.play()
+
 func _dash() -> void:
 	velocity = dash_speed * dash_direction
+
+func _on_enemy_touch_area_body_entered(body: Node2D) -> void:
+	if body == dashed_to_enemy:
+		dashed_to_enemy.damage(SPEED)
+
 
 func _physics_process(_delta: float) -> void:
 	
@@ -117,16 +128,21 @@ func _physics_process(_delta: float) -> void:
 	
 	velocity = moveDirection * SPEED
 	
-	if Input.is_action_pressed("dash") and dash_cooldown.is_stopped():
+	if Input.is_action_just_pressed("dash") and dash_cooldown.is_stopped() and dash_timer.is_stopped():
+		dash_sfx_cooldown.start()
+	if Input.is_action_pressed("dash") and dash_cooldown.is_stopped() and dash_timer.is_stopped():
 		Engine.time_scale = 0.5
 		dashVisualizer()
-	if Input.is_action_just_released("dash") and dash_cooldown.is_stopped():
+	if Input.is_action_just_released("dash") and dash_cooldown.is_stopped() and dash_timer.is_stopped():
 		Engine.time_scale = 1
+		dash_timer.start()
+		dash_sfx_cooldown.stop()
 		inDash = true
 		dash_arrow.visible = false
 		targetDirection = dashVector
+		moveDirection = dashVector
+		dash_sfx.play()
 		pointing_at_enemy.emit(RigidBody2D)
-		dash_timer.start()
 	
 	if inDash:
 		_dash()

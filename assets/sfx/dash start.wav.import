@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cbnjrb4dik1nd"
+path="res://.godot/imported/dash start.wav-2aef3a069211135b1531b7b5eb4d0530.sample"
+
+[deps]
+
+source_file="res://assets/sfx/dash start.wav"
+dest_files=["res://.godot/imported/dash start.wav-2aef3a069211135b1531b7b5eb4d0530.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2
