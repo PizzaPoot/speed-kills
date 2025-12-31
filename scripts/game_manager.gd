@@ -15,13 +15,13 @@ func _process(delta: float) -> void:
 	Freeze timer: %s
 	elapsed_time: %s
 	delta: %s
-	player speed: %s
+	current_speed: %s
 	turn_speed: %s
 	dash_cooldown: %s" % 
 	[FreezeFrameManager.timer.time_left, 
 	str(elapsed_time), 
 	delta,
-	%Player.SPEED,
+	%Player.current_speed,
 	%Player.turn_speed,
 	$"../Player/DashCooldown".time_left])
 	if elapsed_time >= elapsed_seconds:

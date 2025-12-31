@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=4 uid="uid://boig1ilegx0ui"]
+[gd_scene load_steps=24 format=4 uid="uid://boig1ilegx0ui"]
 
 [ext_resource type="Script" uid="uid://dwurn3wroexvy" path="res://scripts/game_manager.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://s6qifvc7aw23" path="res://scenes/player.tscn" id="1_uwrxv"]
@@ -35,6 +35,11 @@ texture = ExtResource("2_p57ef")
 
 [sub_resource type="TileSet" id="TileSet_u5sy4"]
 sources/1 = SubResource("TileSetAtlasSource_p57ef")
+
+[sub_resource type="Curve" id="Curve_gee14"]
+_limits = [0.0, 5.0, 0.0, 200.0]
+_data = [Vector2(0, 5), 0.0, -0.06202246, 0, 0, Vector2(200, 0.5), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [sub_resource type="Shader" id="Shader_iywne"]
 code = "shader_type canvas_item;
@@ -115,6 +120,8 @@ text = "Freeze timer: 0.0"
 [node name="Player" parent="." instance=ExtResource("1_uwrxv")]
 unique_name_in_owner = true
 collision_mask = 3
+floor_constant_speed = true
+acceleration_curve = SubResource("Curve_gee14")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 zoom = Vector2(3, 3)
@@ -182,6 +189,9 @@ mix_target = 2
 [node name="Slime enemy" parent="." groups=["Enemy"] instance=ExtResource("4_lbhrr")]
 position = Vector2(-3, -141)
 
+[node name="Slime enemy2" parent="." groups=["Enemy"] instance=ExtResource("4_lbhrr")]
+position = Vector2(-176, -58)
+
 [node name="edge_colliders" type="Node2D" parent="."]
 position = Vector2(0, 336)
 
@@ -212,8 +222,6 @@ collision_layer = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="edge_colliders/StaticBody2D4"]
 shape = SubResource("WorldBoundaryShape2D_iywne")
 
-[connection signal="draw" from="." to="Player" method="_on_game_draw"]
-[connection signal="pointing_at_enemy" from="Player" to="Slime enemy" method="_on_player_pointing_at_enemy"]
 [connection signal="body_entered" from="Player/enemy_touch_area" to="Player" method="_on_enemy_touch_area_body_entered"]
 [connection signal="timeout" from="Player/DashTimer" to="Player" method="_on_dash_timer_timeout"]
 [connection signal="timeout" from="Player/Dash_sfx_cooldown" to="Player" method="_on_dash_sfx_cooldown_timeout"]
