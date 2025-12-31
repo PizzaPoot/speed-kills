@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://4wjisgdpyel5"]
+
+[ext_resource type="Script" uid="uid://q273lub7s25i" path="res://scripts/enemy_damage_manager.gd" id="1_ki1rb"]
+
+[node name="Enemy_damage_manager" type="Area2D"]
+script = ExtResource("1_ki1rb")
+
+[node name="hurt_player_timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="pre_hurt_player_timer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[connection signal="body_entered" from="." to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_area_2d_body_exited"]
+[connection signal="timeout" from="hurt_player_timer" to="." method="_on_hurt_player_timer_timeout"]
+[connection signal="timeout" from="pre_hurt_player_timer" to="." method="_on_pre_hurt_player_timer_timeout"]

@@ -31,13 +31,15 @@ var max_speed := 200.0
 var acceleration := 1.0
 var turn_speed_divider := 20
 var wall_slowdown_weight := 0.1
-var freezeTime = false
 var turn_speed : float = clamp(turn_speed_divider/desired_speed,0,1)
 var targetDirection := Vector2.RIGHT
 var moveDirection := Vector2.RIGHT
 var dashVector := Vector2.RIGHT
 var inDash := false
 var dashed_to_enemy : CharacterBody2D
+var selected_enemy : CharacterBody2D
+var damaged_enemy : CharacterBody2D
+var enemies_in_area := []
 var dashStartPosition := global_position
 var dash_distance: float = 100.0 #TODO scale with speed
 var dynamic_dash_distance : float = dash_distance
@@ -79,10 +81,11 @@ func dashVisualizer():
 			dash_arrow.set_point_position(1, dashVector*(enemy.position - position).length())
 			dashVector = dashVector.direction_to(enemy.position - position)
 			dynamic_dash_distance = (enemy.position - position).length()
-			dashed_to_enemy = enemy
+			selected_enemy = enemy
 			return
 	else:
 		get_tree().call_group("Enemy", "player_pointing_at_enemy", null)
+	selected_enemy = null
 	dynamic_dash_distance = dash_distance
 	dash_arrow.set_point_position(1, dashVector*dash_distance)
 
@@ -97,7 +100,7 @@ func calculateMoveVector(newInputDirection: Vector2):
 	return Vector2.RIGHT.rotated(smooth_angle)
 
 func _on_dash_timer_timeout() -> void:
-	dash_cooldown.start()
+	print("dash timer timeout")
 	inDash = false
 
 func _on_dash_sfx_cooldown_timeout() -> void:
@@ -107,9 +110,23 @@ func _dash() -> void:
 	velocity = dash_speed * dash_direction
 
 func _on_enemy_touch_area_body_entered(body: Node2D) -> void:
-	if body == dashed_to_enemy:
+	print("adding enemy to area list: ", body)
+	if body == dashed_to_enemy and dashed_to_enemy != damaged_enemy:
+		damaged_enemy = dashed_to_enemy
 		dashed_to_enemy.damage(desired_speed)
+	enemies_in_area.append(body)
 
+func _on_enemy_touch_area_body_exited(body: Node2D) -> void:
+	print("removing enemy from area list: ", body)
+	enemies_in_area.erase(body)
+
+func on_enemy_killed(killed_enemy):
+	print("enemy killed (from player)")
+	print("killed enemy: ", killed_enemy)
+	enemies_in_area.erase(killed_enemy)
+	print("removed enemy from list: ", enemies_in_area)
+	FreezeFrameManager.freezeFrame(0.4)
+	dash_cooldown.stop()
 
 func _physics_process(_delta: float) -> void:
 
@@ -123,8 +140,12 @@ func _physics_process(_delta: float) -> void:
 	
 	if not inDash:
 		moveDirection = calculateMoveVector(newInputDirection)
-	
-	current_speed = get_real_velocity().length()
+		
+		 
+	var try_current_speed = get_real_velocity().length()
+	if str(try_current_speed) != "nan" and str(try_current_speed) != "inf": #HACK this is really bad. 
+		current_speed = try_current_speed									#But timescale = 0 will make it nan or inf
+
 	if current_speed < desired_speed:
 		desired_speed = lerp(desired_speed, current_speed, wall_slowdown_weight) 
 	
@@ -148,18 +169,24 @@ func _physics_process(_delta: float) -> void:
 	if Input.is_action_just_released("dash") and dash_cooldown.is_stopped() and dash_timer.is_stopped():
 		Engine.time_scale = 1
 		dash_timer.start()
+		dash_cooldown.start()
 		dash_sfx_cooldown.stop()
 		inDash = true
 		dash_arrow.visible = false
 		targetDirection = dashVector
 		moveDirection = dashVector
 		desired_speed = max_speed
+		dashed_to_enemy = selected_enemy
+		if dashed_to_enemy in enemies_in_area and dashed_to_enemy != damaged_enemy:
+			damaged_enemy = dashed_to_enemy
+			print("dash release kill")
+			dashed_to_enemy.damage(desired_speed)
 		dash_sfx.play()
 		get_tree().call_group("Enemy", "player_pointing_at_enemy", null)
 	
 	if inDash:
 		_dash()
-		
+
 	handleAnimationDirections()
 	
 	move_and_slide()

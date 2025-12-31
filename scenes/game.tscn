@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=4 uid="uid://boig1ilegx0ui"]
+[gd_scene load_steps=25 format=4 uid="uid://boig1ilegx0ui"]
 
 [ext_resource type="Script" uid="uid://dwurn3wroexvy" path="res://scripts/game_manager.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://s6qifvc7aw23" path="res://scenes/player.tscn" id="1_uwrxv"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://duldeifmssmvm" path="res://scenes/slime_enemy.tscn" id="4_lbhrr"]
 [ext_resource type="AudioStream" uid="uid://cbnjrb4dik1nd" path="res://assets/sfx/dash start.wav" id="6_gee14"]
 [ext_resource type="AudioStream" uid="uid://c8qr5my2byiu2" path="res://assets/sfx/dash.wav" id="7_0tnpc"]
+[ext_resource type="PackedScene" uid="uid://pwhunosa7wcr" path="res://scenes/crystal_enemy.tscn" id="8_gee14"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_u5sy4"]
 texture = ExtResource("2_p57ef")
@@ -186,11 +187,13 @@ stream = ExtResource("7_0tnpc")
 volume_db = -21.945
 mix_target = 2
 
-[node name="Slime enemy" parent="." groups=["Enemy"] instance=ExtResource("4_lbhrr")]
-position = Vector2(-3, -141)
+[node name="enemies" type="Node2D" parent="."]
 
-[node name="Slime enemy2" parent="." groups=["Enemy"] instance=ExtResource("4_lbhrr")]
-position = Vector2(-176, -58)
+[node name="crystal enemy" parent="enemies" instance=ExtResource("8_gee14")]
+position = Vector2(-124, -48)
+
+[node name="Slime enemy" parent="enemies" instance=ExtResource("4_lbhrr")]
+position = Vector2(3, -111)
 
 [node name="edge_colliders" type="Node2D" parent="."]
 position = Vector2(0, 336)
@@ -223,5 +226,6 @@ collision_layer = 2
 shape = SubResource("WorldBoundaryShape2D_iywne")
 
 [connection signal="body_entered" from="Player/enemy_touch_area" to="Player" method="_on_enemy_touch_area_body_entered"]
+[connection signal="body_exited" from="Player/enemy_touch_area" to="Player" method="_on_enemy_touch_area_body_exited"]
 [connection signal="timeout" from="Player/DashTimer" to="Player" method="_on_dash_timer_timeout"]
 [connection signal="timeout" from="Player/Dash_sfx_cooldown" to="Player" method="_on_dash_sfx_cooldown_timeout"]

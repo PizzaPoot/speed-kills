@@ -2,13 +2,11 @@ extends CharacterBody2D
 
 var speed := 100.0
 var health := 100.0
-var player_in_hurtbox := false
-var damage_player_amount := 40.0
 var isDead : bool = false
 var newMaterial = ShaderMaterial.new()
 
 @onready var player = get_tree().get_nodes_in_group("player")[0]
-@onready var slime_sprite = $AnimatedSprite2D
+@onready var enemy_sprite = $AnimatedSprite2D
 @onready var OutlineShader = preload("res://assets/shaders/Outer_outline.gdshader")
 
 func _ready() -> void:
@@ -27,7 +25,7 @@ func kill():
 	self.set_deferred("freeze", true)
 	get_node("CollisionShape2D").queue_free()
 	get_node("Enemy_damage_manager").queue_free()
-	slime_sprite.animation = "death"
+	enemy_sprite.animation = "death"
 
 func _on_death_animation_finished() -> void:
 	self.queue_free()
@@ -39,6 +37,6 @@ func damage(damage_dealt):
 
 func player_pointing_at_enemy(enemy: Variant) -> void:
 	if enemy == self:
-		slime_sprite.material = newMaterial
+		enemy_sprite.material = newMaterial
 	else:
-		slime_sprite.material = ShaderMaterial.new()
+		enemy_sprite.material = ShaderMaterial.new()

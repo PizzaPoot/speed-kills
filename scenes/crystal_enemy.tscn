@@ -1,0 +1,105 @@
+[gd_scene load_steps=15 format=3 uid="uid://pwhunosa7wcr"]
+
+[ext_resource type="Script" uid="uid://emstf40teie5" path="res://scripts/crystal_enemy.gd" id="1_e37ff"]
+[ext_resource type="Texture2D" uid="uid://drspt505546cj" path="res://assets/sprites/crystal.png" id="1_qmjwr"]
+[ext_resource type="PackedScene" uid="uid://4wjisgdpyel5" path="res://scenes/enemy_damage_manager.tscn" id="2_dkfk0"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dkfk0"]
+atlas = ExtResource("1_qmjwr")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e37ff"]
+atlas = ExtResource("1_qmjwr")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_52a6m"]
+atlas = ExtResource("1_qmjwr")
+region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hg37t"]
+atlas = ExtResource("1_qmjwr")
+region = Rect2(96, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w432q"]
+atlas = ExtResource("1_qmjwr")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sa3wy"]
+atlas = ExtResource("1_qmjwr")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_smn3r"]
+atlas = ExtResource("1_qmjwr")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b4e2e"]
+atlas = ExtResource("1_qmjwr")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xv751"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dkfk0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e37ff")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_52a6m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hg37t")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": false,
+"name": &"death",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w432q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sa3wy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_smn3r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b4e2e")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kr7ha"]
+radius = 8.0
+height = 28.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_e37ff"]
+radius = 12.0
+height = 36.0
+
+[node name="crystal enemy" type="CharacterBody2D"]
+script = ExtResource("1_e37ff")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-1, -16)
+sprite_frames = SubResource("SpriteFrames_xv751")
+animation = &"idle"
+autoplay = "idle"
+frame_progress = 0.748097
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -17)
+shape = SubResource("CapsuleShape2D_kr7ha")
+
+[node name="Enemy_damage_manager" parent="." instance=ExtResource("2_dkfk0")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy_damage_manager"]
+position = Vector2(0, -17)
+shape = SubResource("CapsuleShape2D_e37ff")
